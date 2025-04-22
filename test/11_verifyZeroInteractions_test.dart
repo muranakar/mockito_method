@@ -4,22 +4,23 @@ import 'package:mockito/mockito.dart';
 
 import '11_verifyZeroInteractions_test.mocks.dart';
 
-// モックを生成するためのクラス定義
+// Loggerクラスのモックを生成するためのアノテーション
 @GenerateMocks([Logger])
 void main() {
   late MockLogger mockLogger;
 
   setUp(() {
+    // モックの初期化
     mockLogger = MockLogger();
   });
 
-  test('verifyZeroInteractions()の使用例', () {
-    // 相互作用がないことを検証
+  test('verifyZeroInteractions()を使用して相互作用がないことを検証', () {
+    // 検証: mockLoggerに対して、どのメソッドも呼び出されていないことを確認
     verifyZeroInteractions(mockLogger);
   });
 }
 
-// モック用のクラス
+// ログ出力を行うクラス
 class Logger {
   void log(String message) {}
 }

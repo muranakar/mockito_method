@@ -4,22 +4,24 @@ import 'package:mockito/mockito.dart';
 
 import '8_verifyNever_test.mocks.dart';
 
-// モックを生成するためのクラス定義
+// AuthServiceクラスのモックを生成するためのアノテーション
 @GenerateMocks([AuthService])
 void main() {
   late MockAuthService mockAuthService;
 
   setUp(() {
+    // モックの初期化
     mockAuthService = MockAuthService();
   });
 
-  test('verifyNever()の使用例', () {
-    // メソッドが呼ばれていないことを検証
+  test('verifyNever()を使用してメソッドが呼び出されていないことを検証', () {
+    // logoutメソッドが一度も呼び出されていないことを確認
     verifyNever(mockAuthService.logout());
   });
 }
 
-// モック用のクラス
+// 実際のサービスクラス
 class AuthService {
+  // ユーザーをログアウトするメソッド
   void logout() {}
 }

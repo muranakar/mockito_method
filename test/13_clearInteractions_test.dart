@@ -4,17 +4,19 @@ import 'package:mockito/mockito.dart';
 
 import '13_clearInteractions_test.mocks.dart';
 
-// モックを生成するためのクラス定義
+// UserRepositoryクラスのモックを生成するためのアノテーション
 @GenerateMocks([UserRepository])
 void main() {
   late MockUserRepository mockRepository;
 
   setUp(() {
+    // モックの初期化
     mockRepository = MockUserRepository();
   });
 
   test('clearInteractions()の使用例', () {
     // モックの振る舞いを設定
+    // getUserById(1)が呼び出された場合、特定のユーザーを非同期で返す
     when(mockRepository.getUserById(1))
         .thenAnswer((_) => Future.value(User(id: 1, name: '山田太郎')));
 
@@ -22,14 +24,16 @@ void main() {
     mockRepository.getUserById(1);
 
     // 相互作用の記録をクリア
+    // これにより、モックに対するすべての記録された呼び出しがリセットされる
     clearInteractions(mockRepository);
 
-    // クリア後は相互作用が記録されていないことを確認
+    // クリア後にgetUserById(1)が呼び出されていないことを確認
+    // clearInteractions()が正しく動作しているかを検証
     verifyNever(mockRepository.getUserById(1));
   });
 }
 
-// モック用のクラス
+// ユーザーデータを表すクラス
 class User {
   final int id;
   final String name;
@@ -37,6 +41,7 @@ class User {
   User({required this.id, required this.name});
 }
 
+// ユーザー情報を取得するリポジトリクラス
 class UserRepository {
   Future<User> getUserById(int id) async => User(id: id, name: '');
 }
