@@ -16,7 +16,7 @@ void main() {
   test('reset()の使用例', () {
     // モックの振る舞いを設定
     when(mockRepository.getUserById(1))
-        .thenReturn(Future.value(User(id: 1, name: '山田太郎')));
+        .thenAnswer((_) => Future.value(User(id: 1, name: '山田太郎')));
 
     // メソッドを呼び出す
     mockRepository.getUserById(1);

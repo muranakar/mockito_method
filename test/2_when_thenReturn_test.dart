@@ -4,31 +4,34 @@ import 'package:mockito/mockito.dart';
 
 import '2_when_thenReturn_test.mocks.dart';
 
-// モックを生成するためのクラス定義
+// UserRepositoryクラスをモック化するためのアノテーション
 @GenerateMocks([UserRepository])
 void main() {
   late MockUserRepository mockRepository;
 
   setUp(() {
+    // モックの初期化
     mockRepository = MockUserRepository();
   });
 
-  test('when()とthenReturn()の使用例', () {
-    // getUsers()が呼ばれたとき、特定のユーザーリストを返す
+  test('when()とthenAnswer()の使用例', () {
+    // getUsers()が呼ばれたとき、特定のユーザーリストを非同期で返すように設定
     when(mockRepository.getUsers())
-        .thenReturn(Future.value([User(id: 1, name: '山田太郎')]));
+        .thenAnswer((_) => Future.value([User(id: 1, name: '山田太郎')]));
 
-    // パラメータ付きメソッドのモック化
+    // getUserById()が特定のIDで呼ばれたとき、対応するユーザーを非同期で返すように設定
     when(mockRepository.getUserById(1))
-        .thenReturn(Future.value(User(id: 1, name: '山田太郎')));
+        .thenAnswer((_) => Future.value(User(id: 1, name: '山田太郎')));
 
-    // 検証
+    // モックの動作を検証
+    // getUsers()が非空のリストを返すことを確認
     expect(mockRepository.getUsers(), completion(isNotEmpty));
+    // getUserById(1)がUser型のインスタンスを返すことを確認
     expect(mockRepository.getUserById(1), completion(isA<User>()));
   });
 }
 
-// モック用のクラス
+// ユーザーデータを表すクラス
 class User {
   final int id;
   final String name;
@@ -36,6 +39,7 @@ class User {
   User({required this.id, required this.name});
 }
 
+// ユーザー情報を取得するリポジトリクラス
 class UserRepository {
   Future<List<User>> getUsers() async => [];
   Future<User> getUserById(int id) async => User(id: id, name: '');

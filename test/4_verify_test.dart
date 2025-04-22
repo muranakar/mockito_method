@@ -13,19 +13,20 @@ void main() {
     mockRepository = MockUserRepository();
   });
 
-  test('verify()の使用例', () async {
+  test('verify()とverifyNever()の使用例', () async {
     // モックの振る舞いを設定
+    // getUserById(1)が呼び出された場合、特定のユーザーを返す
     when(mockRepository.getUserById(1))
-        .thenReturn(Future.value(User(id: 1, name: '山田太郎')));
+        .thenAnswer((_) => Future.value(User(id: 1, name: '山田太郎')));
 
     // メソッドを呼び出す
     await mockRepository.getUserById(1);
 
-    // メソッドが呼ばれたことを検証
+    // 検証: getUserById(1)が1回呼び出されたことを確認
     verify(mockRepository.getUserById(1)).called(1);
 
-    // 呼び出し回数の検証バリエーション
-    verify(mockRepository.getUserById(1)).called(greaterThan(0));
+    // 検証: getUserById(2)が一度も呼び出されていないことを確認
+    verifyNever(mockRepository.getUserById(2));
   });
 }
 

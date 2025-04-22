@@ -15,9 +15,13 @@ void main() {
 
   test('連続した呼び出しの振る舞い', () {
     // 連続して異なる値を返す
-    when(mockCounter.getCount()).thenAnswer((_) => 1); // 1回目
-    when(mockCounter.getCount()).thenAnswer((_) => 2); // 2回目
-    when(mockCounter.getCount()).thenAnswer((_) => 3); // 3回目以降
+    int callCount = 0;
+    when(mockCounter.getCount()).thenAnswer((_) {
+      callCount++;
+      if (callCount == 1) return 1;
+      if (callCount == 2) return 2;
+      return 3;
+    });
 
     // 検証
     expect(mockCounter.getCount(), equals(1));

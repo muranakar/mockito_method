@@ -5,12 +5,18 @@ import 'package:mockito/annotations.dart';
 
 import '1_mock_creation_test.mocks.dart';
 
-// モックを生成するためのクラス定義
+// @GenerateMocksアノテーションを使用して、HttpClientクラスのモックを生成
+// このアノテーションにより、1_mock_creation_test.mocks.dartファイルが自動生成される
 @GenerateMocks([HttpClient])
 void main() {
-  // テストコード
+  // テストのエントリーポイント
   test('モックの作成テスト', () {
+    // MockHttpClientクラスのインスタンスを作成
+    // MockHttpClientは自動生成されたHttpClientのモッククラス
     final mockHttpClient = MockHttpClient();
+
+    // モックが正しく作成されたことを確認
+    // isNotNullマッチャーを使用して、mockHttpClientがnullでないことを検証
     expect(mockHttpClient, isNotNull);
   });
 }

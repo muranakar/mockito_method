@@ -15,8 +15,8 @@ void main() {
 
   test('モックの振る舞いの上書き', () async {
     // 最初の設定
-    when(mockRepository.getUserById(1)).thenReturn(
-      Future.value(User(id: 1, name: '山田太郎')),
+    when(mockRepository.getUserById(1)).thenAnswer(
+      (_) => Future.value(User(id: 1, name: '山田太郎')),
     );
 
     // 検証
@@ -24,8 +24,8 @@ void main() {
     expect((await mockRepository.getUserById(1)).name, equals('山田太郎'));
 
     // 後から上書き
-    when(mockRepository.getUserById(1)).thenReturn(
-      Future.value(User(id: 1, name: '山田花子')),
+    when(mockRepository.getUserById(1)).thenAnswer(
+      (_) => Future.value(User(id: 1, name: '山田花子')),
     );
 
     // 上書き後の検証
